@@ -30,7 +30,7 @@ const Home = () => {
         loading: false,
       });
     } catch (error) {
-      return error;
+      console.log(error);
     }
   };
 
@@ -44,9 +44,8 @@ const Home = () => {
         <h1 className="home__header--main">
           Citadel of Ricks - Shadow Council Training Manual Extension
         </h1>
-        <h2 className="home__header--sub">
-          Confidential Information To Be Used As Reference By The Shadow Council
-        </h2>
+        <h2 className="home__header--sub">Confidential</h2>
+        <small>Only for official Shadow Council business </small>
       </div>
       <div className="home__random-char">
         {state.loading ? (
@@ -68,15 +67,17 @@ const Home = () => {
                 {state.character.status}
               </p>
             </div>
+            <div className="home__random-char__buttons">
+              <div
+                className="btn btn--white"
+                onClick={() => changeCharacterNum()}
+              >
+                Get Random Character
+              </div>
+              <div className="btn btn--ghost">Go to Directory</div>
+            </div>
           </div>
         )}
-
-        <div className="home__random-char__buttons">
-          <div className="btn btn-white" onClick={() => changeCharacterNum()}>
-            Get Random Character
-          </div>
-          <div className="btn btn-ghost">Go to Directory</div>
-        </div>
       </div>
     </div>
   );
