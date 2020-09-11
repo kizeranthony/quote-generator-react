@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Loading from "../layout/Loading";
 import axios from "axios";
+import { getAllCharacters } from "../actions/character";
 
 const generateCharNum = () => {
   return Math.ceil(Math.random() * 591);

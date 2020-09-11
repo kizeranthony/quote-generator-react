@@ -3,6 +3,8 @@ import { GET_ALL_CHARACTERS, GET_SINGLE_CHARACTER } from "../actions/types";
 const initialState = {
   loading: true,
   error: {},
+  selectedCharacter: {},
+  characters: [],
   character_page: 1,
   character_num: 1,
 };
