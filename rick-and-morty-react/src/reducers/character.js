@@ -1,4 +1,8 @@
-import { GET_ALL_CHARACTERS, GET_SINGLE_CHARACTER } from "../actions/types";
+import {
+  GET_ALL_CHARACTERS,
+  GET_SINGLE_CHARACTER,
+  LOADING,
+} from "../actions/types";
 
 const initialState = {
   loading: true,
@@ -6,7 +10,6 @@ const initialState = {
   selectedCharacter: {},
   characters: [],
   character_page: 1,
-  character_num: 1,
 };
 
 export default function (state = initialState, action) {
@@ -17,11 +20,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         character_page: payload,
+        loading: false,
       };
     case GET_SINGLE_CHARACTER:
       return {
         ...state,
-        character_num: payload,
+        selectedCharacter: payload,
+        loading: false,
+      };
+    case LOADING:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

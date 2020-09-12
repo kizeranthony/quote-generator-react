@@ -1,43 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Loading from "../layout/Loading";
-import axios from "axios";
-import { getAllCharacters } from "../actions/character";
+import PropTypes from "prop-types";
+
+import { connect } from "react-redux";
+import { getSingleCharacter } from "../actions/character";
 
 const generateCharNum = () => {
   return Math.ceil(Math.random() * 591);
 };
 
-const Home = () => {
-  const url = "https://rickandmortyapi.com/api/character";
-  const [state, setState] = useState({
-    charNum: generateCharNum(),
-    character: {},
-    loading: true,
-  });
+const Home = ({ selectedCharacter, error, loading, getSingleCharacter }) => {
+  const getRandomCharacter = () => {
+    const randomNum = generateCharNum();
 
+    getSingleCharacter(randomNum);
+  };
   useEffect(() => {
-    getChar();
-  }, [state.charNum]);
-
-  const getChar = async () => {
-    try {
-      const res = await axios.get(`${url}/${state.charNum}`);
-
-      const characterInfo = res.data;
-
-      setState({
-        ...state,
-        character: characterInfo,
-        loading: false,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const changeCharacterNum = () => {
-    setState({ ...state, charNum: generateCharNum() });
-  };
+    getRandomCharacter();
+  }, []);
 
   return (
     <div className="home container">
@@ -49,29 +29,29 @@ const Home = () => {
         <small>Only for official Shadow Council business </small>
       </div>
       <div className="home__random-char">
-        {state.loading ? (
+        {loading ? (
           <Loading />
         ) : (
           <div className="char-card">
             <div className="char-card__image">
-              <img src={state.character.image} />
+              <img src={selectedCharacter.image} />
             </div>
             <div className="char-card__info">
               <h3 className="char-card__info--name">
-                Name: {state.character.name}
+                Name: {selectedCharacter.name}
               </h3>
               <p className="char-card__info--location">
                 Last Known Whereabouts:
-                {state.character.location.name}
+                {selectedCharacter.location.name}
               </p>
               <p className="char-card__info--status">
-                {state.character.status}
+                {selectedCharacter.status}
               </p>
             </div>
             <div className="home__random-char__buttons">
               <div
                 className="btn btn--white"
-                onClick={() => changeCharacterNum()}
+                onClick={() => getRandomCharacter()}
               >
                 Get Random Character
               </div>
@@ -84,4 +64,15 @@ const Home = () => {
   );
 };
 
-export default Home;
+Home.propTypes = {
+  getSingleCharacter: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  loading: state.character.loading,
+  error: state.character.error,
+  selectedCharacter: state.character.selectedCharacter,
+});
+
+export default connect(mapStateToProps, { getSingleCharacter })(Home);
