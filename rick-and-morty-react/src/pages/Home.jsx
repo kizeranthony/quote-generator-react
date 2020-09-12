@@ -3,19 +3,36 @@ import Loading from "../layout/Loading";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { getSingleCharacter } from "../actions/character";
+import {
+  getSingleCharacter,
+  getAllCharacters,
+  getCharacterCount,
+} from "../actions/character";
 
-const generateCharNum = () => {
-  return Math.ceil(Math.random() * 591);
-};
-
-const Home = ({ selectedCharacter, error, loading, getSingleCharacter }) => {
+const Home = ({
+  selectedCharacter,
+  character_count,
+  error,
+  loading,
+  getSingleCharacter,
+  getAllCharacters,
+  getCharacterCount,
+}) => {
   const getRandomCharacter = () => {
     const randomNum = generateCharNum();
-
     getSingleCharacter(randomNum);
   };
+
+  const getCount = async () => {
+    getCharacterCount();
+  };
+
+  const generateCharNum = () => {
+    return Math.ceil(Math.random() * 671);
+  };
+
   useEffect(() => {
+    getCount();
     getRandomCharacter();
   }, []);
 
@@ -67,12 +84,18 @@ const Home = ({ selectedCharacter, error, loading, getSingleCharacter }) => {
 Home.propTypes = {
   getSingleCharacter: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  getAllCharacters: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   loading: state.character.loading,
   error: state.character.error,
   selectedCharacter: state.character.selectedCharacter,
+  characterCount: state.character.character_count,
 });
 
-export default connect(mapStateToProps, { getSingleCharacter })(Home);
+export default connect(mapStateToProps, {
+  getSingleCharacter,
+  getAllCharacters,
+  getCharacterCount,
+})(Home);
