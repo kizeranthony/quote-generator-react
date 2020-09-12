@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Loading from "../layout/Loading";
 import PropTypes from "prop-types";
 
+import { Link } from "react-router-dom";
+
 import { connect } from "react-redux";
 import {
   getSingleCharacter,
@@ -72,7 +74,9 @@ const Home = ({
               >
                 Get Random Character
               </div>
-              <div className="btn btn--ghost">Go to Directory</div>
+              <Link to="/directory">
+                <div className="btn btn--ghost">Go to Directory</div>
+              </Link>
             </div>
           </div>
         )}
